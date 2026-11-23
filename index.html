@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Stechen</title>
+  <meta name="description" content="Stechen – Ansagen und Punkte beim Kartenspiel mitzählen. Läuft offline, alles bleibt auf dem Gerät.">
+  <meta name="theme-color" content="#0b0d10">
+  <meta name="color-scheme" content="dark">
+
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+
+  <!-- iOS: Vollbild-App vom Home-Bildschirm -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Stechen">
+  <meta name="format-detection" content="telephone=no">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main id="app">
+    <section id="screen-setup" class="screen" aria-label="Spielstart"></section>
+    <section id="screen-board" class="screen" aria-label="Spielfeld"></section>
+    <section id="screen-final" class="screen" aria-label="Endwertung"></section>
+  </main>
+  <div id="overlay-root"></div>
+
+  <noscript><p class="noscript">Stechen braucht JavaScript.</p></noscript>
+
+  <script src="version.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
