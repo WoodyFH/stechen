@@ -47,7 +47,7 @@ try {
   ok(await page.locator('.pill').isDisabled(), 'Abschließen gesperrt bei falscher Summe');
   // korrigieren: drei Mal Minus -> 0
   for (let i = 1; i < 4; i++) await page.locator(`.cell[data-i="${i}"] .btn.minus`).click();
-  ok((await text('.pill')).includes('Runde abschließen'), 'Summe passt -> Runde abschließen');
+  ok((await text('.pill')).includes('Weiter'), 'Summe passt -> Weiter');
   await page.click('.pill.is-go');
   await page.waitForSelector('.board[data-phase=bid]');
   ok((await text('.c-label')).includes('Runde 2 von 2'), 'Runde 2: Geber wandert weiter, Zähler steht bei 2 Karten');
@@ -83,6 +83,20 @@ try {
   }
   await page.waitForTimeout(300);
   ok((await page.locator('.board').getAttribute('data-phase')) === 'dealer', `Alles zurückgenommen (${steps + 1} Schritte) -> Geberwahl`);
+
+  // Neues Spiel: zurück zum Start, Anzahl und Namen wieder änderbar
+  await page.click('.dot');
+  await page.click('.menu-item:has-text("Neues Spiel")');
+  await page.click('.btn-solid');
+  await page.waitForSelector('.setup');
+  ok((await page.locator('.name-field input').count()) === 4, 'Neues Spiel: Startbildschirm mit 4 Namensfeldern');
+  ok((await page.locator('.name-field input').first().inputValue()) === 'A', 'Neues Spiel: Namen sind vorbelegt');
+  await page.click('button[aria-label="Weniger Spieler"]');
+  ok((await page.locator('.name-field input').count()) === 3, 'Neues Spiel: Spieleranzahl änderbar');
+  await page.locator('.name-field input').nth(1).fill('Bea');
+  await page.click('.cta');
+  await page.waitForSelector('.board[data-phase=dealer]');
+  ok((await page.locator('.cell').count()) === 3, 'Neues Spiel mit 3 Spielern gestartet');
 
   // Neu laden: Zustand bleibt erhalten
   await page.reload();

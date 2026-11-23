@@ -118,19 +118,23 @@ Installieren-Symbol klicken (oder Menü → **Apps → Diese Website als App ins
 - **Ansage:** Die Spieler sind nacheinander dran, links vom Geber zuerst, der Geber zuletzt.
   Großes Plus, kleines Minus, Haken bestätigt. Ab Runde 5 (einstellbar) ist die Zahl, bei der
   die Summe der Kartenzahl entspricht, beim Geber gesperrt und rot markiert.
-- **Ergebnis:** Alle Quadranten sind gleichzeitig aktiv und tragen ihre Stiche ein. Fehlt nur
-  noch einer, wird sein Wert vorgeschlagen. Ein Tipp auf „–“ trägt direkt 0 ein.
+- **Ergebnis (Stiche):** sieht bewusst anders aus als die Ansage (gestrichelter Rahmen, Feld
+  „Stiche“, die Ansage als feste Marke darunter). Alle Quadranten sind gleichzeitig aktiv und
+  tragen ihre Stiche ein. Fehlt nur noch einer, wird sein Wert vorgeschlagen. Sind schon alle
+  Stiche vergeben, zählen leere Felder als 0, man muss keine 0 eintippen. Ein Tipp auf „–“
+  trägt ebenfalls direkt 0 ein.
 - **Mittelpunkt:** zeigt die verbleibenden Stiche (grün bei 0, rot mit `+N` bei Überschuss).
   Antippen öffnet das Menü: Rückgängig, Punktetabelle, Einstellungen, Neues Spiel.
-- **Runde abschließen** geht nur, wenn die Summe der Stiche der Kartenzahl entspricht.
-  Sonst steht in der Mitte „2 zu viel“ oder „1 fehlt“, mit dem Ausweg **Trotzdem speichern**.
+- **Weiter** (in der Mitte, immer sichtbar) geht nur, wenn die Summe der Stiche der Kartenzahl
+  entspricht. Solange Stiche fehlen, steht dort „Stiche fehlen“, bei falscher Summe „2 zu viel“
+  oder „1 fehlt“, mit dem Ausweg **Trotzdem speichern**.
 - **Punkte** (alle Werte in den Einstellungen änderbar, die Gesamtpunkte werden immer live
   aus den gespeicherten Ansagen und Stichen berechnet und rechnen rückwirkend neu):
   Treffer 10 + 2 pro angesagtem Stich, gelungene 0 = 10 + 1 pro Karte der Runde,
   daneben −3 pro Stich Abweichung.
-- **Neues Spiel** startet mit denselben Spielern direkt bei der Geberwahl. **Spiel löschen**
-  (Einstellungen) verwirft das Spiel und führt zurück zum Start, um Namen oder Spieleranzahl
-  zu ändern. Beides mit Rückfrage.
+- **Neues Spiel** führt zurück zum Start: Spieleranzahl und Namen sind vorbelegt und wieder
+  änderbar, dann Geber wählen. **Spiel löschen** (Einstellungen) verwirft das laufende Spiel
+  ebenfalls. Beides mit Rückfrage.
 - Spielerzahl und Ansageverbot-Startrunde gelten ab dem nächsten Spiel, Rundenzahl und
   Punktewerte sofort.
 

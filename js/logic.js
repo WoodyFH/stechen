@@ -203,23 +203,29 @@ export function bidRemaining(game) {
 /**
  * Stiche der Runde. Fehlt genau einer, wird er als Vorschlag vorausgefüllt
  * (Kartenzahl minus Rest), sofern der Wert zwischen 0 und Kartenzahl liegt.
+ * Sind schon alle Stiche vergeben (Summe = Kartenzahl), zählen leere Felder als 0.
  * values enthält die wirksamen Werte (null = noch nichts eingetragen),
- * suggested ist der Index des vorausgefüllten Spielers oder null.
+ * suggestedAll die Indizes der vorausgefüllten Spieler (suggested: der erste oder null).
  */
 export function effectiveTricks(game, roundIdx = game.current) {
   const round = game.rounds[roundIdx];
   const cards = cardsInRound(roundIdx);
   const values = round.tricks.slice();
-  let suggested = null;
+  let suggestedAll = [];
   const missing = values.map((v, i) => (v === null ? i : -1)).filter((i) => i >= 0);
-  if (!round.done && missing.length === 1 && game.n > 1) {
+  if (!round.done && missing.length > 0) {
     const rest = cards - sum(values);
-    if (rest >= 0 && rest <= cards) {
+    if (missing.length === 1 && rest >= 0 && rest <= cards) {
+      // genau einer fehlt: Rest als Vorschlag
       values[missing[0]] = rest;
-      suggested = missing[0];
+      suggestedAll = missing;
+    } else if (missing.length > 1 && rest === 0) {
+      // alle Stiche sind vergeben: wer nichts eingetragen hat, hat 0 gemacht
+      missing.forEach((i) => (values[i] = 0));
+      suggestedAll = missing;
     }
   }
-  return { values, suggested };
+  return { values, suggested: suggestedAll.length ? suggestedAll[0] : null, suggestedAll };
 }
 
 /** Direkt einen Wert setzen (0..Kartenzahl). */

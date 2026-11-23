@@ -411,3 +411,23 @@ test('Tabellenzeilen: Ansage/Stiche/Punkte je Runde', () => {
   assert.equal(rows[1].done, false);
   assert.equal(rows[1].cells[0].points, null);
 });
+
+test('Alle Stiche vergeben: leere Felder zählen als 0, Abschluss sofort möglich', () => {
+  let g = playUntilRound(started(), 2); // 3 Karten
+  g = bidAll(g, [1, 1, 1, 0]);
+  g = L.setTricks(g, 0, 2);
+  assert.equal(L.roundCheck(g).status, 'incomplete', 'Summe 2 von 3: noch offen');
+  g = L.setTricks(g, 1, 1); // Summe 3 = Kartenzahl, zwei Spieler leer
+  const eff = L.effectiveTricks(g);
+  assert.deepEqual(eff.values, [2, 1, 0, 0]);
+  assert.deepEqual(eff.suggestedAll, [2, 3]);
+  assert.equal(L.roundCheck(g).status, 'ok');
+  assert.equal(L.resultRemaining(g), 0);
+  const done = L.finishRound(g);
+  assert.notEqual(done, g);
+  assert.deepEqual(done.rounds[2].tricks, [2, 1, 0, 0]);
+  // ein vorausgefüllter Wert lässt sich ändern und wird dann fest
+  const edited = L.stepTricks(g, 2, +1);
+  assert.equal(edited.rounds[2].tricks[2], 1);
+  assert.equal(L.roundCheck(edited).status, 'incomplete', 'Summe 4 von 3, der letzte Wert fehlt noch');
+});

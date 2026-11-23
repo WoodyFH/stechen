@@ -72,7 +72,7 @@ export function renderSetup(root, { settings, names, onNames, onCount, onSetting
   );
 }
 
-export function renderFinal(root, { game, settings, onTable, onUndo, onNew, onChangePlayers }) {
+export function renderFinal(root, { game, settings, onTable, onUndo, onNew }) {
   const rank = L.ranking(game, settings);
   const winners = rank.filter((r) => r.rank === 1).length;
   const rows = rank.map((r, k) => {
@@ -105,7 +105,6 @@ export function renderFinal(root, { game, settings, onTable, onUndo, onNew, onCh
           { class: 'final-sub' },
           h('button', { class: 'btn-text', type: 'button', onclick: onTable }, 'Punktetabelle'),
           h('button', { class: 'btn-text', type: 'button', onclick: onUndo }, 'Rückgängig'),
-          h('button', { class: 'btn-text', type: 'button', onclick: onChangePlayers }, 'Spieler ändern'),
         ),
       ),
     ),

@@ -59,7 +59,7 @@ function makeCell(i, def) {
         ),
         (r.score = h('div', { class: 'score' })),
       ),
-      h('div', { class: 'num' }, (r.val = h('div', { class: 'val' })), (r.sub = h('div', { class: 'sub' }))),
+      h('div', { class: 'num' }, (r.cap = h('div', { class: 'cap' })), (r.val = h('div', { class: 'val' })), (r.sub = h('div', { class: 'sub' }))),
       h(
         'div',
         { class: 'ctl' },
@@ -141,6 +141,8 @@ export class Board {
     const active = L.activeBidder(game);
     const forbidden = phase === 'bid' ? L.forbiddenBid(game) : null;
     const eff = phase === 'result' ? L.effectiveTricks(game) : null;
+    if (this.lastPhase !== undefined && this.lastPhase !== phase) this.swap();
+    this.lastPhase = phase;
     this.board.dataset.phase = phase;
 
     game.players.forEach((name, i) => {
@@ -184,10 +186,11 @@ export class Board {
         const v = eff.values[i];
         val = v === null ? '–' : String(v);
         if (v === null) valCls += ' is-empty';
-        if (eff.suggested === i) valCls += ' is-suggested';
+        if (eff.suggestedAll.includes(i)) valCls += ' is-suggested';
         sub = `Ansage ${round.bids[i]}`;
         if (v !== null && v === round.bids[i]) subCls += ' match';
       }
+      r.cap.textContent = phase === 'result' ? 'Stiche' : phase === 'bid' && (isActive || round.bids[i] !== null) ? 'Ansage' : '';
       r.val.className = valCls;
       setText(r.val, val, { pop: phase !== 'dealer' });
       r.sub.className = subCls;
@@ -227,7 +230,7 @@ export class Board {
     r.dot.classList.toggle('is-over', remaining < 0);
     setText(r.dotNum, remaining < 0 ? `+${-remaining}` : String(remaining));
     r.label.textContent = `Runde ${game.current + 1} von ${game.totalRounds}`;
-    r.caption.textContent = phase === 'dealer' ? 'Wer gibt zuerst?' : phase === 'bid' ? 'Ansage' : 'Ergebnis';
+    r.caption.textContent = phase === 'dealer' ? 'Wer gibt zuerst?' : phase === 'bid' ? 'Ansage' : 'Stiche';
     r.hint.hidden = !(game.current === 0 && phase !== 'dealer');
 
     // Aktionsbereich: Zufällig / Runde abschließen / Meldung
@@ -246,14 +249,17 @@ export class Board {
       if (check.status === 'ok') {
         r.pill.dataset.act = 'finish';
         r.pill.classList.add('is-go');
-        r.pill.textContent = game.current + 1 >= game.totalRounds ? 'Spiel abschließen' : 'Runde abschließen';
+        r.pill.textContent = game.current + 1 >= game.totalRounds ? 'Fertig' : 'Weiter';
       } else if (check.complete) {
         r.pill.classList.add('is-warn');
         r.pill.disabled = true;
         r.pill.textContent = check.message;
         r.force.hidden = false;
       } else {
-        r.pill.hidden = true;
+        // noch nicht alles eingetragen: der Knopf ist trotzdem da, nur noch gesperrt
+        r.pill.classList.add('is-idle');
+        r.pill.disabled = true;
+        r.pill.textContent = 'Stiche fehlen';
       }
     } else {
       r.pill.hidden = true;
@@ -288,6 +294,17 @@ export class Board {
         }
       };
       tick();
+    });
+  }
+
+  /** Beim Phasenwechsel (Ansage -> Stiche) kurz überblenden, damit der Wechsel auffällt. */
+  swap() {
+    if (prefersReducedMotion()) return;
+    this.cells.forEach((c) => {
+      const inner = c.firstElementChild;
+      inner.classList.remove('swap');
+      void inner.offsetWidth;
+      inner.classList.add('swap');
     });
   }
 

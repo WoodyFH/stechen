@@ -63,11 +63,9 @@ async function newGame() {
     });
     if (!ok) return;
   }
-  if (g && g.n === S.settings.players) {
-    S.game = L.createGame({ names: g.players, settings: S.settings });
-  } else {
-    S.game = null;
-  }
+  // Zurück zum Start: Namen sind vorbelegt, Anzahl und Namen lassen sich wieder ändern.
+  if (g) S.settings = L.normalizeSettings({ ...S.settings, players: g.n });
+  S.game = null;
   S.history = [];
   persist();
   render();
@@ -242,7 +240,6 @@ function render() {
       onTable: showTable,
       onUndo: undo,
       onNew: newGame,
-      onChangePlayers: discardGame,
     });
   }
   syncWakeLock();
