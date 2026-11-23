@@ -5,4 +5,4 @@
  * Die Datei ist ein klassisches Skript (kein Modul), damit sie sowohl im
  * Service Worker (importScripts) als auch in der Seite geladen werden kann.
  */
-globalThis.STECHEN_VERSION = 2;
+globalThis.STECHEN_VERSION = 3;

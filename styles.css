@@ -490,9 +490,9 @@ svg {
   width: var(--dot);
   height: var(--dot);
   border-radius: 50%;
-  border: 2px solid var(--line-2);
+  border: 2px solid rgba(236, 239, 244, 0.85);
   background: var(--bg);
-  color: var(--muted);
+  color: var(--text);
   font-size: calc(var(--dot) * 0.42);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
@@ -541,15 +541,15 @@ svg {
   line-height: 1.35;
 }
 .c-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
 }
 .c-caption {
   font-size: 11px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--dim);
+  color: var(--muted);
 }
 .c-hint {
   font-size: 11px;
@@ -643,11 +643,21 @@ svg {
   position: static;
 }
 .list .dot {
+  position: relative;
+  left: auto;
+  top: auto;
   flex: none;
   width: 60px;
   height: 60px;
-  font-size: 25px;
+  font-size: 26px;
   box-shadow: none;
+}
+.list .dot.is-ok,
+.list .dot.is-over {
+  box-shadow: none;
+}
+.list .c-label {
+  font-size: 16px;
 }
 .list .c-info {
   flex: 1;
@@ -722,9 +732,14 @@ svg {
   font-size: 30px;
 }
 .list .sub {
+  margin-top: clamp(6px, 6cqh, 18px);
   font-size: 11px;
   min-height: 0;
   white-space: nowrap;
+}
+.list .board[data-phase='result'] .sub,
+.board.list[data-phase='result'] .sub {
+  padding: 2px 9px;
 }
 .list .sub.forbid {
   font-size: 11px;
